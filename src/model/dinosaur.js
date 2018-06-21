@@ -3,16 +3,17 @@
 const uuid = require('uuid/v4');
 const storage = require('../lib/storage');
 
-module.exports = class Note {
+module.exports = class Dinosaur {
   constructor(config) {
     this._id = uuid();
-    this.createdOn = new Date();
-    this.title = config.title;
-    this.content = config.content || '';
+    this.name = config.name;
+    this.species = config.species;
+    this.eatsMeat = config.eatsMeat;
+    this.eatsPlants = config.eatsPlants;
   }
 
   save() {
-    return storage.save('Notes', this);
+    return storage.save('Dinosaurs', this);
   }
 
   static fetchAll() {
@@ -20,7 +21,7 @@ module.exports = class Note {
   }
 
   static findOne(_id) {
-    return storage.get('Notes', _id);
+    return storage.get('Dinosaurs', _id);
   }
 
   static updateOne(_id) { // eslint-disable-line

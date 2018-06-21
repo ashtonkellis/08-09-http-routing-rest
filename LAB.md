@@ -1,8 +1,5 @@
 ## Submission Instructions
-* Work in a fork of this repository
-* Work in a branch on your fork
 * Create a PR to your master from your working branch.
-* Ensure that your repository/branch is connected to travis-ci.com
 * Ensure that your repository/branch is deployed on heroku.com
 * Submit on canvas:
   * a question and observation

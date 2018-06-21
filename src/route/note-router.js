@@ -1,16 +1,16 @@
 'use strict';
 
-const Note = require('../model/note');
+const Dinosaur = require('../model/dinosaur');
 const logger = require('../lib/logger');
 const customResponse = require('../lib/response');
 
 module.exports = (router) => {
-  router.post('/api/v1/note', (request, response) => {
-    logger.log(logger.INFO, 'ROUTE-NOTE: POST /api/v1/note');
-    const newNote = new Note(request.body);
-    newNote.save()
-      .then((note) => {
-        customResponse.sendJSON(response, 200, note);
+  router.post('/api/v1/dinosaur', (request, response) => {
+    logger.log(logger.INFO, 'ROUTE-NOTE: POST /api/v1/dinosaur');
+    const newDinosaur = new Dinosaur(request.body);
+    newDinosaur.save()
+      .then((dinosaur) => {
+        customResponse.sendJSON(response, 200, dinosaur);
         return undefined;
       })
       .catch((err) => {
@@ -20,16 +20,16 @@ module.exports = (router) => {
       });
   });
 
-  // /api/v1/note?id=12335
-  router.get('/api/v1/note', (request, response) => {
+  // /api/v1/dinosaur?id=123
+  router.get('/api/v1/dinosaur', (request, response) => {
     if (!request.url.query.id) {
       customResponse.sendError(response, 404, 'Your request requires an id');
       return undefined;
     }
 
-    Note.findOne(request.url.query.id)
-      .then((note) => {
-        customResponse.sendJSON(response, 200, note);
+    Dinosaur.findOne(request.url.query.id)
+      .then((dinosaur) => {
+        customResponse.sendJSON(response, 200, dinosaur);
       })
       .catch((err) => {
         console.log(err);
