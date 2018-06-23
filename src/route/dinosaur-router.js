@@ -42,7 +42,18 @@ module.exports = (router) => {
   router.delete('/api/v1/dinosaur', (request, response) => {
     logger.log(logger.INFO, 'ROUTE-DINOSAUR: DELETE /api/v1/dinosaur');
 
+    if (!request.url.query.id) {
+      customResponse.sendError(response, 404, 'Your request requires an id');
+      return undefined;
+    }
 
-    // YOU ARE HERE!!!
+    Dinosaur.deleteOne(request.url.query.id)
+      .then((dinosaurId) => {
+        customResponse.sendJSON(response, 204, dinosaurId);
+      })
+      .catch((err) => {
+        customResponse.sendError(response, 404, err.message);
+      });
+    return undefined;
   });
 };
