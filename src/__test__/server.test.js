@@ -122,4 +122,15 @@ describe('DELETE /api/v1/dinosaur', () => {
         throw err;
       });
   });
+
+  test('404 for resource not found', () => {
+    return superagent.delete((`${apiUrl}?id=00000`))
+      .then((response) => {
+        throw response;
+      })
+      .catch((err) => {
+        expect(err.status).toEqual(404);
+        expect(err).toBeInstanceOf(Error);
+      });
+  });
 });
