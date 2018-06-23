@@ -18,6 +18,18 @@ const mockResource = {
 beforeAll(() => server.start(5000));
 afterAll(() => server.stop());
 
+describe('404 for non-existent routes', () => {
+  test('GET: 404 on pad path', () => {
+    return superagent.get(`${apiUrl}/bad/path`)
+      .then((response) => {
+        throw response;
+      })
+      .catch((err) => {
+        expect(err.status).toEqual(404);
+      });
+  });
+});
+
 describe('POST to /api/v1/dinosaur', () => {
   test('200 for successful saving of a new dinosaur', () => {
     return superagent.post(apiUrl)
@@ -61,7 +73,7 @@ describe('GET /api/v1/dinosaur', () => {
       });
   });
 
-  test('200 successful GET request', () => {
+  test('200 on successful request', () => {
     return superagent.get(`${apiUrl}?id=${mockResourceForGet._id}`)
       .then((response) => {
         expect(response.status).toEqual(200);
@@ -72,6 +84,53 @@ describe('GET /api/v1/dinosaur', () => {
       })
       .catch((err) => {
         throw err;
+      });
+  });
+
+  test('404 with non-existent ID', () => {
+    return superagent.get(`${apiUrl}?id=12345`)
+      .then((response) => {
+        throw response;
+      })
+      .catch((err) => {
+        expect(err.status).toEqual(404);
+        expect(err).toBeInstanceOf(Error);
+      });
+  });
+});
+
+describe('DELETE /api/v1/dinosaur', () => {
+  let mockResourceForDelete;
+  
+  beforeEach(() => {
+    const newDinosaur = new Dinosaur(mockResource);
+    newDinosaur.save()
+      .then((dinosaur) => {
+        mockResourceForDelete = dinosaur;
+      })
+      .catch((err) => {
+        throw err;
+      });
+  });
+  
+  test('200 on successful request', () => {
+    return superagent.delete(`${apiUrl}?id=${mockResourceForDelete._id}`)
+      .then((response) => {
+        expect(response.status).toBe(204);
+      })
+      .catch((err) => {
+        throw err;
+      });
+  });
+
+  test('404 for resource not found', () => {
+    return superagent.delete((`${apiUrl}?id=00000`))
+      .then((response) => {
+        throw response;
+      })
+      .catch((err) => {
+        expect(err.status).toEqual(404);
+        expect(err).toBeInstanceOf(Error);
       });
   });
 });

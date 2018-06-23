@@ -29,6 +29,6 @@ module.exports = class Dinosaur {
   }
 
   static deleteOne(_id) { // eslint-disable-line
-    // TODO: write code here to delete a user in the storage module by targeting their id
+    return storage.delete('Dinosaurs', _id);
   }
 };

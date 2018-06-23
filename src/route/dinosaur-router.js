@@ -6,7 +6,7 @@ const customResponse = require('../lib/response');
 
 module.exports = (router) => {
   router.post('/api/v1/dinosaur', (request, response) => {
-    logger.log(logger.INFO, 'ROUTE-NOTE: POST /api/v1/dinosaur');
+    logger.log(logger.INFO, 'ROUTE-DINOSAUR: POST /api/v1/dinosaur');
     const newDinosaur = new Dinosaur(request.body);
     newDinosaur.save()
       .then((dinosaur) => {
@@ -14,7 +14,7 @@ module.exports = (router) => {
         return undefined;
       })
       .catch((err) => {
-        logger.log(logger.INFO, `ROUTE NOTE: There was a bad request ${JSON.stringify(err.message)}`);
+        logger.log(logger.INFO, `ROUTE DINOSAUR: There was a bad request ${JSON.stringify(err.message)}`);
         customResponse.sendError(response, 400, err.message);
         return undefined;
       });
@@ -22,6 +22,8 @@ module.exports = (router) => {
 
   // /api/v1/dinosaur?id=123
   router.get('/api/v1/dinosaur', (request, response) => {
+    logger.log(logger.INFO, 'ROUTE-DINOSAUR: GET /api/v1/dinosaur');
+
     if (!request.url.query.id) {
       customResponse.sendError(response, 404, 'Your request requires an id');
       return undefined;
@@ -32,7 +34,24 @@ module.exports = (router) => {
         customResponse.sendJSON(response, 200, dinosaur);
       })
       .catch((err) => {
-        console.log(err);
+        customResponse.sendError(response, 404, err.message);
+      });
+    return undefined;
+  });
+
+  router.delete('/api/v1/dinosaur', (request, response) => {
+    logger.log(logger.INFO, 'ROUTE-DINOSAUR: DELETE /api/v1/dinosaur');
+
+    if (!request.url.query.id) {
+      customResponse.sendError(response, 404, 'Your request requires an id');
+      return undefined;
+    }
+
+    Dinosaur.deleteOne(request.url.query.id)
+      .then((dinosaurId) => {
+        customResponse.sendJSON(response, 204, dinosaurId);
+      })
+      .catch((err) => {
         customResponse.sendError(response, 404, err.message);
       });
     return undefined;
