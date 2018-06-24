@@ -2,7 +2,7 @@
 
 const Dinosaur = require('../model/dinosaur');
 const logger = require('../lib/logger');
-
+const customResponse = require('../lib/response');
 
 module.exports = (router) => {
   router.post('/api/v1/dinosaur', (request, response) => {

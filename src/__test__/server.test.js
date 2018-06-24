@@ -5,7 +5,7 @@ const server = require('../lib/server');
 const Dinosaur = require('../model/dinosaur');
 const fs = require('fs');
 
-require('dotenv').confit();
+require('dotenv').config();
 
 const apiUrl = 'http://localhost:5000/api/v1/dinosaur';
 
