@@ -3,7 +3,6 @@
 const superagent = require('superagent');
 const server = require('../lib/server');
 const Dinosaur = require('../model/dinosaur');
-// const path = require('path');
 const fs = require('fs');
 
 const apiUrl = 'http://localhost:5000/api/v1/dinosaur';
@@ -16,7 +15,6 @@ const mockResource = {
 };
 
 beforeAll(() => server.start(5000));
-// STRETCH GOAL: delete yoru test files in the afterall hook if testing in file-system mode
 afterAll(() => {
   server.stop();
 

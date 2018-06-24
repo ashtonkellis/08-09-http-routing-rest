@@ -5,6 +5,21 @@
 ## Heroku Deployed Version
 https://cf-js-401-lab-08-09.herokuapp.com/
 
+## Persistence Options
+To save all data to memory:
+```
+// include in environmental variables
+STORAGE=filesystem
+```
+
+To save all data to file system:
+```
+// include in environmental variables
+STORAGE=filesystem
+// create directory
+/src/data/Dinosaurs
+```
+
 ## Resource: DINOSAURS!!!! RAWR!
 Dinosaurs have the following fields:
 ```
