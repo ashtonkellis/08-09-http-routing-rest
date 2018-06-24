@@ -1,6 +1,6 @@
 'use strict';
 
-const logger = require('./logger');
+const logger = require('./../logger');
 
 const storage = module.exports = {};
 
@@ -35,7 +35,6 @@ storage.delete = (schema, _id) => {
     
     if (memory[schema][_id]) {
       logger.log(logger.INFO, `STORAGE: deleting ${JSON.stringify(memory[schema][_id])}`);
-      // const item = memory[schema][_id];
       delete memory[schema][_id];
       return resolve(_id);
     }

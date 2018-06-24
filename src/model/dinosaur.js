@@ -1,7 +1,7 @@
 'use strict';
 
 const uuid = require('uuid/v4');
-const storage = require('../lib/storage');
+const storage = require('../lib/storage/main');
 
 module.exports = class Dinosaur {
   constructor(config) {
@@ -28,7 +28,7 @@ module.exports = class Dinosaur {
     // TODO: Bonus to write code here teo update a user in the storage module by targeting their ID
   }
 
-  static deleteOne(_id) { // eslint-disable-line
+  static deleteOne(_id) {
     return storage.delete('Dinosaurs', _id);
   }
 };

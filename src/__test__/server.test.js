@@ -3,12 +3,13 @@
 const superagent = require('superagent');
 const server = require('../lib/server');
 const Dinosaur = require('../model/dinosaur');
+const fs = require('fs');
+
+require('dotenv').config();
 
 const apiUrl = 'http://localhost:5000/api/v1/dinosaur';
 
 const mockResource = {
-  title: 'test title',
-  content: 'test content',
   name: 'Little Foot',
   species: 'Long Neck',
   eatsMeat: false,
@@ -16,7 +17,22 @@ const mockResource = {
 };
 
 beforeAll(() => server.start(5000));
-afterAll(() => server.stop());
+afterAll(() => {
+  server.stop();
+  
+  if (process.env.STORAGE === 'filesystem') {
+    const directory = `${__dirname}/../data/Dinosaurs`;
+
+    fs.readdir(directory, (err, files) => {
+      if (err) throw err;
+      files.forEach((file) => {
+        fs.unlink(`${directory}/${file}`, (err2) => {
+          if (err2) throw err2;
+        });
+      });
+    });
+  }
+});
 
 describe('404 for non-existent routes', () => {
   test('GET: 404 on pad path', () => {
@@ -64,7 +80,7 @@ describe('GET /api/v1/dinosaur', () => {
   let mockResourceForGet;
   beforeEach(() => {
     const newDinosaur = new Dinosaur(mockResource);
-    newDinosaur.save()
+    return newDinosaur.save()
       .then((dinosaur) => {
         mockResourceForGet = dinosaur;
       })
@@ -101,10 +117,10 @@ describe('GET /api/v1/dinosaur', () => {
 
 describe('DELETE /api/v1/dinosaur', () => {
   let mockResourceForDelete;
-  
+
   beforeEach(() => {
     const newDinosaur = new Dinosaur(mockResource);
-    newDinosaur.save()
+    return newDinosaur.save()
       .then((dinosaur) => {
         mockResourceForDelete = dinosaur;
       })
@@ -112,7 +128,7 @@ describe('DELETE /api/v1/dinosaur', () => {
         throw err;
       });
   });
-  
+
   test('200 on successful request', () => {
     return superagent.delete(`${apiUrl}?id=${mockResourceForDelete._id}`)
       .then((response) => {
