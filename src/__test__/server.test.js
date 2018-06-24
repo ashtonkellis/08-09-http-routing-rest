@@ -5,6 +5,8 @@ const server = require('../lib/server');
 const Dinosaur = require('../model/dinosaur');
 const fs = require('fs');
 
+require('dotenv').confit();
+
 const apiUrl = 'http://localhost:5000/api/v1/dinosaur';
 
 const mockResource = {
@@ -17,17 +19,19 @@ const mockResource = {
 beforeAll(() => server.start(5000));
 afterAll(() => {
   server.stop();
+  
+  if (process.env.STORAGE === 'filesystem') {
+    const directory = `${__dirname}/../data/Dinosaurs`;
 
-  const directory = `${__dirname}/../data/Dinosaurs`;
-
-  fs.readdir(directory, (err, files) => {
-    if (err) throw err;
-    files.forEach((file) => {
-      fs.unlink(`${directory}/${file}`, (err2) => {
-        if (err2) throw err2;
+    fs.readdir(directory, (err, files) => {
+      if (err) throw err;
+      files.forEach((file) => {
+        fs.unlink(`${directory}/${file}`, (err2) => {
+          if (err2) throw err2;
+        });
       });
     });
-  });
+  }
 });
 
 describe('404 for non-existent routes', () => {
