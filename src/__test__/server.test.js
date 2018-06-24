@@ -7,8 +7,6 @@ const Dinosaur = require('../model/dinosaur');
 const apiUrl = 'http://localhost:5000/api/v1/dinosaur';
 
 const mockResource = {
-  title: 'test title',
-  content: 'test content',
   name: 'Little Foot',
   species: 'Long Neck',
   eatsMeat: false,
