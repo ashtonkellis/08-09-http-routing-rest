@@ -14,6 +14,7 @@ const mockResource = {
 };
 
 beforeAll(() => server.start(5000));
+// STRETCH GOAL: delete yoru test files in the afterall hook if testing in file-system mode
 afterAll(() => server.stop());
 
 describe('404 for non-existent routes', () => {
@@ -62,7 +63,7 @@ describe('GET /api/v1/dinosaur', () => {
   let mockResourceForGet;
   beforeEach(() => {
     const newDinosaur = new Dinosaur(mockResource);
-    newDinosaur.save()
+    return newDinosaur.save()
       .then((dinosaur) => {
         mockResourceForGet = dinosaur;
       })
@@ -102,7 +103,7 @@ describe('DELETE /api/v1/dinosaur', () => {
   
   beforeEach(() => {
     const newDinosaur = new Dinosaur(mockResource);
-    newDinosaur.save()
+    return newDinosaur.save()
       .then((dinosaur) => {
         mockResourceForDelete = dinosaur;
       })

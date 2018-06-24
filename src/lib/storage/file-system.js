@@ -10,7 +10,7 @@ storage.save = (schema, item) => {
   const json = JSON.stringify(item);
   return new Promise((resolve, reject) => {
     if (!schema) return reject(new Error('Cannot create a new item, schema required'));
-    if (!item || !item.title) return reject(new Error('Cannot create a new item, item or title required'));
+    if (!item || !item.name) return reject(new Error('Cannot create a new item, item and item.name required'));
     fs.writeFile(file, json, (err) => {
       if (err) return reject(err);
       return resolve(item);
@@ -25,6 +25,16 @@ storage.get = (schema, _id) => {
     fs.readFile(targetFile, (err, data) => {
       if (err) return reject(err);
       return resolve(JSON.parse(data.toString()));
+    });
+  });
+};
+
+storage.delete = (schema, _id) => {
+  const targetFile = `${dataDirectory}/${schema}/${_id}.json`;
+  return new Promise((resolve, reject) => {
+    fs.unlink(targetFile, (err) => {
+      if (err) return reject(err);
+      return resolve(_id);
     });
   });
 };
